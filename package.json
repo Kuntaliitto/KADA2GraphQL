@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "apollo-server-express": "^2.9.7",
+    "elasticsearch": "^16.4.0"
+  }
+}
