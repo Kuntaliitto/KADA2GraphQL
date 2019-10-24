@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "apollo-server-express": "^2.9.7",
-    "elasticsearch": "^16.4.0"
+    "elasticsearch": "^16.4.0",
+    "moment": "^2.24.0"
   }
 }
