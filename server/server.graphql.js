@@ -1,13 +1,13 @@
 const { ElasticSearchClient } = require('./server.elasticsearch');
 const elasticSearchSchema = require('./server.es.schema');
-const elasticSearchSchemaNewsItems = require('./server.es.schemaNewsItems');
 const { makeExecutableSchema } = require('graphql-tools');
 
 // Construct a schema, using GraphQL schema language
 const typeDefs = `
     type Query {
         pages: [Pages]
-        page(nid: Int!): Pages,
+        page(nid: Int!): [Pages]
+        news(nid: Int!): [NewsItems]
         news_items: [NewsItems]
     }
 
@@ -16,7 +16,7 @@ const typeDefs = `
         nid: Int!
         title: String
         type: String
-        uuid: ID!
+        uuid: String
         changed: String
         search_api_language: String
         pori_rendered_entity: String
@@ -27,7 +27,7 @@ const typeDefs = `
         nid: Int!
         title: String
         type: String
-        uuid: ID!
+        uuid: String
         changed: String
         search_api_language: String
         pori_rendered_entity: String
@@ -47,7 +47,29 @@ const resolvers = {
                 });
         }),
         page: (_, { nid }) => new Promise((resolve, reject) => {
-            ElasticSearchClient({ ...elasticSearchSchema })
+            ElasticSearchClient({
+                "query": {
+                    "multi_match": {
+                        "query": nid,
+                        "fields": ["nid","id"]
+                    }
+                }
+            })
+                .then(r => {
+                    let _source = r['hits']['hits'];
+                    _source.map((item, i) => _source[i] = item._source);
+                    resolve(_source);
+                });
+        }),
+
+        news_items: () => new Promise((resolve, reject) => {
+            ElasticSearchClient({
+                "query": {
+                    "multi_match": {
+                        "query": "news_item",
+                        "fields": ["type"]
+                    }
+                } })
                 .then(r => {
                     let _source = r['hits']['hits'];
                     _source.map((item, i) => _source[i] = item._source);
@@ -55,9 +77,15 @@ const resolvers = {
                     resolve(_source);
                 });
         }),
-
-        news_items: () => new Promise((resolve, reject) => {
-            ElasticSearchClient({ ...elasticSearchSchemaNewsItems })
+        news: (_, { nid }) => new Promise((resolve, reject) => {
+            ElasticSearchClient({
+                "query": {
+                    "multi_match": {
+                        "query": nid,
+                        "fields": ["nid", "id"]
+                    }
+                }
+            })
                 .then(r => {
                     let _source = r['hits']['hits'];
                     _source.map((item, i) => _source[i] = item._source);
