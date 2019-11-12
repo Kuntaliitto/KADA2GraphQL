@@ -18,6 +18,11 @@ function ElasticSearchClient(body) {
     return client.search({ index: 'pocnodet', body: body });
 }
 
+function ElasticSearchClientTerms(body) {
+    // perform the actual search passing in the index, the search query and the type
+    return client.search({ index: 'pocterms', body: body });
+}
+
 function ApiElasticSearchClient(req, res) {
     // perform the actual search passing in the index, the search query and the type
     ElasticSearchClient({ ...elasticSearchSchema })
@@ -30,5 +35,6 @@ function ApiElasticSearchClient(req, res) {
 
 module.exports = {
     ApiElasticSearchClient,
-    ElasticSearchClient
+    ElasticSearchClient,
+    ElasticSearchClientTerms
 };
