@@ -1,8 +1,15 @@
 # GraphQL API
 
+start the server
+
+```
+yarn install
+node server/server.js
+```
+
 ## Example queries
 
-'''
+```
 query FindAllPages{
   pages {
     title
@@ -56,23 +63,47 @@ query FindTermById{
     url
   }
 }
-'''
+```
 
 ## Schema
 
 ```
-    type Pages {
-        id: Int
-        nid: Int!
-        title: String
-        type: String
-        uuid: String
-        changed: String
-        bodySummary: String    
-        bodyValue: String
-        field_keywords: [Keywords]
-        keywords: Keywords
-        search_api_language: String
-        pori_rendered_entity: String
-    }
+type Pages {
+  id: Int
+  nid: Int!
+  title: String
+  type: String
+  uuid: String
+  changed: String
+  bodySummary: String    
+  bodyValue: String
+  field_keywords: [Keywords]
+  keywords: Keywords
+  search_api_language: String
+  pori_rendered_entity: String
+}
+
+type NewsItems {
+  id: Int
+  nid: Int!
+  title: String
+  type: String
+  uuid: String
+  changed: String
+  bodySummary: String    
+  bodyValue: String
+  search_api_language: String
+  pori_rendered_entity: String
+}
+
+type Keywords {
+  id: Int
+  name: String
+  description: String
+  uuid: String
+  vocabulary: Int
+  node_count: String
+  url: String
+  search_api_viewed: String
+}
 ```
