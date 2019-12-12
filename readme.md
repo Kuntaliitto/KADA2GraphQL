@@ -1,6 +1,12 @@
-# GraphQL API
+# Overall architecture
+
+![Overall architect](docs/architecture.png)
+
+
+## GraphQL API
 
 start the server
+
 
 ```
 yarn install
